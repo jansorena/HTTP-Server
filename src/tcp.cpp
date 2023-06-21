@@ -34,7 +34,6 @@ void tcp_server_create(struct tcp_server_t *server, int port) {
         exit(1);
     } else {
         std::cout << "Servidor HTTP iniciado en el puerto " << port << std::endl;
-        std::cout << "Escuchando conexiones entrantes ..." << std::endl;
         std::cout << std::endl;
     }
 }
@@ -87,5 +86,5 @@ void tcp_recv(int sock, void *data, size_t size) {
 
 void tcp_close(int sock) {
     close(sock);
-    std::cout << "Conexion cerrada." << std::endl;
+    std::cout << "\nConexion cerrada." << std::endl;
 }
