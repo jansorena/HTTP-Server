@@ -1,4 +1,5 @@
 build/*
 .vscode
 temp.html
+test.py
 
