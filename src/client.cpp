@@ -1,5 +1,11 @@
 #include <iostream>
+#include <string>
+#include "tcp.h"
+#define SIZE 1024
 
 int main(){
-    std::cout << "Hello World! Client" << std::endl;
+    struct tcp_client_t server;
+
+
+    return 0;
 }
