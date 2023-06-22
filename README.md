@@ -81,15 +81,15 @@ Para iniciar el servidor, ejecutar el archivo `server` compilado en el directori
 ./server
 ```
 
-El servidor escuchará en el puerto 10000 y esperará conexiones de clientes. Una vez recibido las peticiones, imprimira por la terminal las peticiones recibidas
+El servidor escuchará en el puerto 10000 y esperará conexiones de clientes. Una vez recibido las peticiones, imprimirá por la terminal las peticiones recibidas.
 
 ### Navegador
 
-De algún navegador realizar las peticiones accediendo a `https://localhost:10000/ruta/a/abrir`. Cabe destacar que las peticiones hechas a `http://localhost:10000` son rechazadas por el servidor por no utilizar SSL.
+De algún navegador realizar las peticiones accediendo a `https://localhost:10000/ruta/a/abrir`. 
 
+Cabe destacar que las peticiones hechas a `http://localhost:10000` son rechazadas por el servidor por no utilizar SSL.
 
-
-Las rutas posibles a acceder se encuentran o se pueden agregar en la carpeta HTTP
+Las rutas posibles a acceder se encuentran o se pueden agregar en la carpeta HTTP.
 
 ### Cliente
 
@@ -107,16 +107,22 @@ with socket.create_connection((host, port)) as sock:
 
 El header de respuesta es mostrado en la terminal y el contenido html es temporalmente copiado en `temp.html` y abierto en el navegador predeterminado.
 
-## Demonstracion
+> Solo muestra el contenido html.
+
+## Demostración
 
 
 
 ---
 
-Una version sin SSL se encuentra disponible en `https://github.com/jansorena/Redes-Lab2/tree/no-ssl`
+Una versión sin SSL se encuentra disponible en `https://github.com/jansorena/Redes-Lab2/tree/no-ssl`
+
+Para cambiar de rama:
 
 ```bash
 git checkout no-ssl
 
 git pull origin no-ssl
 ```
+
+La instalación y compilación es la misma que para el proyecto principal.
