@@ -13,11 +13,11 @@ std::string generateResponse(const std::string& status,
 std::string getMimeType(const std::string& filePath);
 
 // Enviar respuesta
-void sendResponse(std::string path, std::string code, int sock, bool redirect,
+void sendResponse(std::string path, std::string code, SSL* ssl, bool redirect,
                   std::string redirectURL);
 
 // Enviar archivo solicitado
-void sendFile(std::string filePath, int sock);
+void sendFile(std::string filePath, SSL* ssl);
 
 // Obtener metodo de la request
 std::string method(std::string request);
@@ -29,12 +29,12 @@ std::string path(std::string request);
 std::string HTTPVersion(std::string request);
 
 // Verificar metodo de la request
-bool checkMethod(std::string, int sock);
+bool checkMethod(std::string, SSL* ssl);
 
 // Verificar HTTP de la request
-bool checkHTTP(std::string versionString, int sock);
+bool checkHTTP(std::string versionString, SSL* ssl);
 
 // Parsear la ruta
-std::string fileRoute(std::string path, int sock);
+std::string fileRoute(std::string path, SSL* ssl);
 
 #endif

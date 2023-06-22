@@ -1,6 +1,9 @@
 #include "tcp.h"
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#include <openssl/crypto.h>
+#include <openssl/err.h>
+#include <openssl/ssl.h>
 #include <sys/socket.h>
 #include <unistd.h>
 #include <cstring>
@@ -96,4 +99,24 @@ void tcp_recv(int sock, void* data, size_t size) {
 void tcp_close(int sock) {
   close(sock);
   std::cout << "\nConexion cerrada." << std::endl;
+}
+
+void ssl_send(SSL* ssl, const void* data, size_t size) {
+  if (SSL_write(ssl, data, size) < 0) {
+    std::cerr << "No se puede enviar el mensaje." << std::endl;
+    exit(1);
+  }
+}
+
+void ssl_recv(SSL* ssl, void* data, size_t size) {
+  if (SSL_read(ssl, data, size) < 0) {
+    std::cerr << "No se puede recibir el mensaje" << std::endl;
+    exit(1);
+  }
+}
+
+void configureSSL(SSL_CTX* ssl_ctx) {
+  SSL_CTX_use_certificate_file(ssl_ctx, "../ssl/certificate.crt",
+                               SSL_FILETYPE_PEM);
+  SSL_CTX_use_PrivateKey_file(ssl_ctx, "../ssl/private.key", SSL_FILETYPE_PEM);
 }

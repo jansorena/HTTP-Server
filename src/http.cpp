@@ -19,6 +19,7 @@ std::string generateResponse(const std::string& status,
   }
   response << "\r\n";
   response << content;
+
   return response.str();
 }
 
@@ -43,7 +44,7 @@ std::string getMimeType(const std::string& filePath) {
 }
 
 // Enviar respuesta
-void sendResponse(std::string path, std::string code, int sock, bool redirect,
+void sendResponse(std::string path, std::string code, SSL* ssl, bool redirect,
                   std::string redirectURL) {
   std::ifstream file(path);
   std::string content;
@@ -55,17 +56,16 @@ void sendResponse(std::string path, std::string code, int sock, bool redirect,
   std::string mimeType = getMimeType(path);
   std::string response =
       generateResponse(code, mimeType, responseContent, redirect, redirectURL);
-  tcp_send(sock, response.c_str(), response.length());
+  ssl_send(ssl, response.c_str(), response.length());
 }
 
 // Enviar archivo solicitado
-void sendFile(std::string filePath, int sock) {
+void sendFile(std::string filePath, SSL* ssl) {
   std::ifstream file(filePath);
   if (file) {
-    sendResponse(filePath, "200 OK", sock, false, "");
+    sendResponse(filePath, "200 OK", ssl, false, "");
   } else {
-    sendResponse("/home/jansorena/development/Redes-Lab2/error-pages/404.html",
-                 "404 Not Found", sock, false, "");
+    sendResponse("../error-pages/404.html", "404 Not Found", ssl, false, "");
   }
 }
 
@@ -95,38 +95,36 @@ std::string HTTPVersion(std::string request) {
 }
 
 // Verificar metodo de la request
-bool checkMethod(std::string method, int sock) {
+bool checkMethod(std::string method, SSL* ssl) {
   if (method == "GET")
     return true;
   else if (method == "BREW") {
-    sendResponse("/home/jansorena/development/Redes-Lab2/error-pages/418.html",
-                 "418 I'm a teapot", sock, false, "");
+    sendResponse("../error-pages/418.html", "418 I'm a teapot", ssl, false, "");
     return false;
   } else {
-    sendResponse("/home/jansorena/development/Redes-Lab2/error-pages/405.html",
-                 "405 Method Not Allowed", sock, false, "");
+    sendResponse("../error-pages/405.html", "405 Method Not Allowed", ssl,
+                 false, "");
     return false;
   }
 }
 
 // Verificar HTTP de la request
-bool checkHTTP(std::string versionString, int sock) {
+bool checkHTTP(std::string versionString, SSL* ssl) {
   if (versionString == "HTTP/1.1")
     return true;
-  sendResponse("/home/jansorena/development/Redes-Lab2/error-pages/505.html",
-               "505 HTTP Version Not Supported", sock, false, "");
+  sendResponse("../error-pages/505.html", "505 HTTP Version Not Supported", ssl,
+               false, "");
   return false;
 }
 
 // Parsear la ruta
-std::string fileRoute(std::string path, int sock) {
+std::string fileRoute(std::string path, SSL* ssl) {
   if (path[0] != '/') {
-    sendResponse("/home/jansorena/development/Redes-Lab2/error-pages/400.html",
-                 "400 Bad Request", sock, false, "");
+    sendResponse("../error-pages/400.html", "400 Bad Request", ssl, false, "");
     return "400";
   }
 
-  std::string basePath = "/home/jansorena/development/Redes-Lab2/http";
+  std::string basePath = "../http";
 
   if (path == "/" || path == "/index.html") {
     basePath += "/index.html";
@@ -138,9 +136,9 @@ std::string fileRoute(std::string path, int sock) {
   }
 
   if (path.back() != '/' && path.find_last_of('.') == std::string::npos) {
-    std::string redirectURL = "http://localhost:10000" + path + "/";
-    sendResponse("/home/jansorena/development/Redes-Lab2/error-pages/301.html",
-                 "301 Moved Permanently", sock, true, redirectURL);
+    std::string redirectURL = "https://localhost:10000" + path + "/";
+    sendResponse("../error-pages/301.html", "301 Moved Permanently", ssl, true,
+                 redirectURL);
     return "301";
   }
 
