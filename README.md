@@ -33,8 +33,13 @@ Para compilar este proyecto, se requiere tener instalado `CMake`, `GCC` y la bib
    ```bash
    cmake ..
    ```
+   
+   Para MacOS
+   ```bash
+   cmake .. -DOPENSSL_ROOT_DIR=/opt/homebrew/opt/openssl@3 -DOPENSSL_LIBRARIES=/opt/homebrew/opt/openssl@3/lib
+   ```
 
-4. Compilar el proyecto con el comando `make`:
+5. Compilar el proyecto con el comando `make`:
    
    ```bash
    make
