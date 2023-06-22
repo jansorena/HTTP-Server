@@ -43,15 +43,14 @@ int main() {
 
     // Parsear la request
     std::string request = requestBuffer;
-    std::cout << "Request solicitada:" << request << std::endl;
+    std::cout << "Request solicitada:" << std::endl;
+    std::cout << request;
 
     // Obtener method, path y version HTTP
     std::string methodString = method(request);
     std::string pathString = path(request);
     std::string versionString = HTTPVersion(request);
 
-    std::cout << methodString << " " << pathString << " " << versionString
-              << std::endl;
     // Verificar metodo
     if (!checkMethod(methodString, ssl)) {
       SSL_shutdown(ssl);
